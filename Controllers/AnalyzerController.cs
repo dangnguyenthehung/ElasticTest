@@ -9,15 +9,15 @@ using System.Web.Http;
 
 namespace ElasticTest.Controllers
 {
-    public class elasticDemoController : ApiController
+    public class AnalyzerController : ApiController
     {
-        // GET: api/elasticDemo
+        // GET: api/Analyzer
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
-        // GET: api/elasticDemo/5
+        // GET: api/Analyzer/5
         public List<tweet> Get(string title)
         {
 
@@ -28,31 +28,14 @@ namespace ElasticTest.Controllers
             // Connect
             var elasticClient = new ElasticClient(connectionSettings);
 
-            // Query search cho index có dạng:
-            // account / user / 1
-            // {
-            //      "user" : "tri",
-            //      "post_date" : "2017-03/11",
-            //      "message" : "Hi, first user"
-            // }
 
-            // old search
-            //var searchResponse = elasticClient.Search<tweet>(sd => sd
-            //                                                .Index("post")
-            //                                                .Type("home")
-            //                                                .Query(q => q
-            //                                                    .MultiMatch(m => m.Fields(f => f.Field(p => p.title).Field(p => p.description).Field(p => p.district)).Query(title)
-            //                                                    )));
             // new search
             var searchResponse = elasticClient.Search<tweet>(sd => sd
                                                             .Index("post")
                                                             .Type("home")
-                                                            .Query(q => q.Wildcard(c => c
-                                                            .Field(p => p.description)
-                                                            .Value("*" + title + "*")
-                                                            )));
-            // trả về
-            List <tweet> obj = new List<tweet>();
+                                                            .Query(q => q.MultiMatch(m => m.Fields("description,title").Query(title)
+                                                                )));
+            List<tweet> obj = new List<tweet>();
             if (searchResponse.IsValid && searchResponse.Hits.Count != 0)
             {
                 obj = searchResponse.Documents.ToList();
@@ -67,12 +50,12 @@ namespace ElasticTest.Controllers
             return obj;
         }
 
-        // POST: api/elasticDemo
+        // POST: api/Analyzer
         public void Post([FromBody]string value)
         {
         }
 
-        // PUT: api/elasticDemo/5
+        // PUT: api/Analyzer/5
         public void Put(int id, [FromBody]string value)
         {
             // Connect tới database ở cloud
@@ -100,7 +83,7 @@ namespace ElasticTest.Controllers
             //return searchResponse;
         }
 
-        // DELETE: api/elasticDemo/5
+        // DELETE: api/Analyzer/5
         public void Delete(int id)
         {
         }

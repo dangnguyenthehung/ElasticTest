@@ -44,3 +44,4 @@ E:\Demo\Demo\ElasticTest\ElasticTest\bin\System.Web.Http.xml
 E:\Demo\Demo\ElasticTest\ElasticTest\bin\System.Web.Http.WebHost.xml
 E:\Demo\Demo\ElasticTest\ElasticTest\obj\Release\ElasticTest.dll
 E:\Demo\Demo\ElasticTest\ElasticTest\obj\Release\ElasticTest.pdb
+E:\Demo\Demo\ElasticTest\ElasticTest\obj\Release\ElasticTest.csprojResolveAssemblyReference.cache
