@@ -29,11 +29,25 @@ namespace ElasticTest.Controllers
             var elasticClient = new ElasticClient(connectionSettings);
 
 
-            // new search
+            // analyzer search
+            //var searchResponse = elasticClient.Search<tweet>(sd => sd
+            //                                                .Index("post")
+            //                                                .Type("home")
+            //                                                .Query(q => q.MultiMatch(m => m.Fields("description,title").Query(searchContent)
+            //                                                    )));
+
+            // MatchPhrasePrefix search
+            //var searchResponse = elasticClient.Search<tweet>(sd => sd
+            //                                                .Index("post")
+            //                                                .Type("home")
+            //                                                .Query(q => q.MatchPhrasePrefix(m => m.Field("description").Query(title)
+            //                                                    )));
+
+            // 
             var searchResponse = elasticClient.Search<tweet>(sd => sd
                                                             .Index("post")
                                                             .Type("home")
-                                                            .Query(q => q.MultiMatch(m => m.Fields("description,title").Query(title)
+                                                            .Query(q => q.QueryString(m => m.Fields(f => f.Field(p => p.title).Field(p => p.description)).Query("*" + title + "*")
                                                                 )));
             List<tweet> obj = new List<tweet>();
             if (searchResponse.IsValid && searchResponse.Hits.Count != 0)
